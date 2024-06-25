@@ -30,7 +30,7 @@ function App() {
             <h3>Layers</h3>
             <CbLayer lyrName={'tambon'} onCheckboxChange={setCheckboxStatus} />
             <CbLayer lyrName={'amphoe'} onCheckboxChange={setCheckboxStatus} />
-            <CbLayer lyrName={'Province'} onCheckboxChange={setCheckboxStatus} />
+            <CbLayer lyrName={'province'} onCheckboxChange={setCheckboxStatus} />
             <CbLayer lyrName={'trans'} onCheckboxChange={setCheckboxStatus} />
           </div>
         </div>

@@ -51,7 +51,7 @@ const Map = ({ layer }: any) => {
         };
 
         const overlayMaps = {
-            "ขอบเขตอำเภอ": amphoe.addTo(map)
+            "ขอบเขตอำเภอ": amphoe
         }
 
         L.control.layers(baseMaps, overlayMaps).addTo(map);
@@ -77,6 +77,12 @@ const Map = ({ layer }: any) => {
             zIndex: 1
         });
 
+        const amphoe = L.tileLayer.wms('https://engrids.soc.cmu.ac.th/geoserver/CM/wms?', {
+            layers: 'CM:amphoe_cm',
+            format: 'image/png',
+            transparent: true,
+        })
+
         const province = L.tileLayer.wms('https://engrids.soc.cmu.ac.th/geoserver/CM/wms?', {
             layers: 'CM:prov_cm',
             format: 'image/png',
@@ -93,11 +99,13 @@ const Map = ({ layer }: any) => {
         // console.log(layer.layer);
 
         if (layer.layer.tambon) {
-            console.log('add tambon');
             tambon.addTo(map);
-        } else {
-            console.log('remove tambon');
-            removeWmsLayer()
+        } else if (layer.layer.amphoe) {
+            amphoe.addTo(map);
+        } else if (layer.layer.province) {
+            province.addTo(map);
+        } else if (layer.layer.trans) {
+            trans.addTo(map);
         }
 
     }, [layer]);
