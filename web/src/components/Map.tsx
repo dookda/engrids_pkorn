@@ -87,14 +87,14 @@ const Map = ({ layer }: any) => {
             layers: 'CM:prov_cm',
             format: 'image/png',
             transparent: true,
-            zIndex: 2
+            zIndex: 1
         });
 
         const trans = L.tileLayer.wms('https://engrids.soc.cmu.ac.th/geoserver/CM/wms?', {
             layers: 'CM:road',
             format: 'image/png',
             transparent: true,
-            zIndex: 3
+            zIndex: 1
         });
         // console.log(layer.layer);
 
