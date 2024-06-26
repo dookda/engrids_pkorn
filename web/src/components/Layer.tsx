@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 
-const CbLayer = ({ lyrName, onCheckboxChange }: any) => {
+const Layer = ({ lyrName, onCheckboxChange }: any) => {
     const [isChecked, setIsChecked] = useState(false)
 
     const handleChecked = (e: any) => {
@@ -26,9 +26,9 @@ const CbLayer = ({ lyrName, onCheckboxChange }: any) => {
     )
 }
 
-CbLayer.propTypes = {
+Layer.propTypes = {
     lyrName: PropTypes.string.isRequired,
     onCheckboxChange: PropTypes.func.isRequired
 }
 
-export default CbLayer
+export default Layer

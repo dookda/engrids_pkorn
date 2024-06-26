@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import Navbar from './components/Navbar';
 import Map from './components/Map';
 // import Layers from './components/Layers';
-import CbLayer from './components/CbLayer';
+import Layer from './components/Layer';
 import './App.css';
 
 
@@ -21,17 +21,22 @@ function App() {
     <>
       <Navbar></Navbar>
 
-      <div className="container">
+      <div className="container mt-3">
         <div className="row">
           <div className="col-sm-8">
-            <Map layer={{ layer }} />
+            <div className="card">
+              <Map layer={{ layer }} />
+            </div>
           </div>
           <div className="col-sm-4">
-            <h3>Layers</h3>
-            <CbLayer lyrName={'tambon'} onCheckboxChange={setCheckboxStatus} />
-            <CbLayer lyrName={'amphoe'} onCheckboxChange={setCheckboxStatus} />
-            <CbLayer lyrName={'province'} onCheckboxChange={setCheckboxStatus} />
-            <CbLayer lyrName={'trans'} onCheckboxChange={setCheckboxStatus} />
+            <div className="card">
+              <div className="card-body">
+                <h3>Layers</h3>
+                <Layer lyrName={'tambon'} onCheckboxChange={setCheckboxStatus} />
+                <Layer lyrName={'amphoe'} onCheckboxChange={setCheckboxStatus} />
+                <Layer lyrName={'province'} onCheckboxChange={setCheckboxStatus} />
+                <Layer lyrName={'trans'} onCheckboxChange={setCheckboxStatus} /></div>
+            </div>
           </div>
         </div>
       </div>
