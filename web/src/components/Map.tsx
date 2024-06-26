@@ -16,10 +16,7 @@ const Map = ({ layer }: any) => {
 
     const removeWmsLayer = () => {
         mapRef.current?.eachLayer((layer: any) => {
-
-            if (layer instanceof L.tileLayer.wms) {
-
-                console.log(layer);
+            if (!layer.options.basemap) {
                 mapRef.current?.removeLayer(layer);
             }
         });
@@ -37,7 +34,8 @@ const Map = ({ layer }: any) => {
         mapRef.current = L.map('map').setView([18.71281373038289, 98.94286749933825], 12);
         const map: any = mapRef.current;
         const osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '© OpenStreetMap contributors'
+            attribution: '© OpenStreetMap contributors',
+            basemap: true,
         });
 
         const amphoe: L.Layer = L.tileLayer.wms('https://engrids.soc.cmu.ac.th/geoserver/CM/wms?', {
@@ -66,50 +64,61 @@ const Map = ({ layer }: any) => {
     }, []);
 
     useEffect(() => {
+        try {
+            const map: any = mapRef.current;
+            if (!layer) return;
 
-        if (!layer) return;
-        const map: any = mapRef.current;
+            const tambon = L.tileLayer.wms('https://engrids.soc.cmu.ac.th/geoserver/CM/wms?', {
+                layers: 'CM:tambon_cm',
+                format: 'image/png',
+                transparent: true,
+                zIndex: 1
+            });
 
-        const tambon = L.tileLayer.wms('https://engrids.soc.cmu.ac.th/geoserver/CM/wms?', {
-            layers: 'CM:tambon_cm',
-            format: 'image/png',
-            transparent: true,
-            zIndex: 1
-        });
+            const amphoe = L.tileLayer.wms('https://engrids.soc.cmu.ac.th/geoserver/CM/wms?', {
+                layers: 'CM:amphoe_cm',
+                format: 'image/png',
+                transparent: true,
+                zIndex: 1
+            })
 
-        const amphoe = L.tileLayer.wms('https://engrids.soc.cmu.ac.th/geoserver/CM/wms?', {
-            layers: 'CM:amphoe_cm',
-            format: 'image/png',
-            transparent: true,
-        })
+            const province = L.tileLayer.wms('https://engrids.soc.cmu.ac.th/geoserver/CM/wms?', {
+                layers: 'CM:prov_cm',
+                format: 'image/png',
+                transparent: true,
+                zIndex: 1
+            });
 
-        const province = L.tileLayer.wms('https://engrids.soc.cmu.ac.th/geoserver/CM/wms?', {
-            layers: 'CM:prov_cm',
-            format: 'image/png',
-            transparent: true,
-            zIndex: 1
-        });
+            const trans = L.tileLayer.wms('https://engrids.soc.cmu.ac.th/geoserver/CM/wms?', {
+                layers: 'CM:road',
+                format: 'image/png',
+                transparent: true,
+                zIndex: 1
+            });
 
-        const trans = L.tileLayer.wms('https://engrids.soc.cmu.ac.th/geoserver/CM/wms?', {
-            layers: 'CM:road',
-            format: 'image/png',
-            transparent: true,
-            zIndex: 1
-        });
-        // console.log(layer.layer);
-
-        if (layer.layer.tambon) {
-            tambon.addTo(map);
-        } else if (layer.layer.amphoe) {
-            amphoe.addTo(map);
-        } else if (layer.layer.province) {
-            province.addTo(map);
-        } else if (layer.layer.trans) {
-            trans.addTo(map);
+            removeWmsLayer();
+            for (let key in layer.layer) {
+                if (layer.layer[key]) {
+                    switch (key) {
+                        case 'tambon':
+                            tambon.addTo(map);
+                            break;
+                        case 'amphoe':
+                            amphoe.addTo(map);
+                            break;
+                        case 'province':
+                            province.addTo(map);
+                            break;
+                        case 'trans':
+                            trans.addTo(map);
+                            break;
+                    }
+                }
+            }
+        } catch (error) {
+            console.log(error);
         }
-
     }, [layer]);
-
     return <div className='map' id="map" ></div>;
 };
 
